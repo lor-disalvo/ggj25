@@ -4,8 +4,8 @@ namespace Characters
 {
     public class Movement : MonoBehaviour
     {
-        public Rigidbody2D body;
-        public float speed = 70;
+        [SerializeField]
+        public float speed = 15;
 
         public void Update()
         {
@@ -14,7 +14,8 @@ namespace Characters
 
             var tempVect = new Vector3(h, v, 0);
             tempVect = tempVect.normalized * (speed * Time.deltaTime);
-            body.MovePosition(body.transform.position + tempVect);
+
+            transform.position += tempVect;
         }
     }
 }
