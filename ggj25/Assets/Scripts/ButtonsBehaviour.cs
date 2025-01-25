@@ -42,9 +42,4 @@ public class ButtonsBehaviour : MonoBehaviour
     {
         print("Hello World!");
     }
-
-    private void OnDisable()
-    {
-        
-    }
 }
