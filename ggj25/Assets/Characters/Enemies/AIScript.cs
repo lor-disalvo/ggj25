@@ -17,8 +17,9 @@ namespace Characters.Enemies
 
         [SerializeField] public EnemyType type;
         private GameObject _player;
+        public SpriteRenderer sprite;
 
-        public float step;
+        public float step = 1;
         public bool playerSpotted;
 
         void Start()
@@ -27,13 +28,13 @@ namespace Characters.Enemies
             switch (type)
             {
                 case EnemyType.Small:
-                    step = 7;
+                    step *= 2;
                     break;
                 case EnemyType.Large:
-                    step = 3;
+                    step *= .5F;
                     break;
                 case EnemyType.Muskrat:
-                    step = 6;
+                    step *= 1.5F;
                     break;
                 case EnemyType.Medium:
                 default:
@@ -52,6 +53,7 @@ namespace Characters.Enemies
             var pos = transform.position;
             var playerPos = _player.transform.position;
             playerSpotted = Vector3.Distance(pos, playerPos) < 10;
+            Debug.Log("Player is spotted: "+ playerSpotted);
         }
 
         private void CheckBehaviour()
@@ -82,15 +84,18 @@ namespace Characters.Enemies
         {
             var ver = -1 ^ Random.Range(1, 3);
             var hor = -1 ^ Random.Range(1, 3);
-            var dir = new Vector3(1 * ver, 1 * hor, transform.position.z);
+            sprite.flipX = hor < 0;
+            var dir = new Vector3(1 * hor, 1 * ver, transform.position.z);
             transform.position += dir * (step * Time.deltaTime);
+            Thread.Sleep(2000);
         }
 
         private void DoMedium()
         {
-            if (!playerSpotted) return; 
-            
-            transform.position += _player.transform.position * (step * Time.deltaTime);
+            if (!playerSpotted) return;
+
+            transform.position += Vector3.Lerp(transform.position, _player.transform.position, 4) * Time.deltaTime;
+                //_player.transform.position * (step * Time.deltaTime);
             Attack();
         }
 
@@ -111,7 +116,7 @@ namespace Characters.Enemies
 
         private void Attack()
         {
-            throw new NotImplementedException();
+            Debug.Log("Attack");
         }
 
         public void OnCollisionEnter(Collision other)
