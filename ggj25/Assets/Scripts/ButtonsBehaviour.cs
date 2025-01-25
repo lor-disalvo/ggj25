@@ -42,4 +42,8 @@ public class ButtonsBehaviour : MonoBehaviour
     {
         print("Hello World!");
     }
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
 }
