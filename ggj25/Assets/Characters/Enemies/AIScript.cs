@@ -21,6 +21,7 @@ namespace Characters.Enemies
 
         public float step = 1;
         public bool playerSpotted;
+        private int timer = 0;
 
         void Start()
         {
@@ -44,6 +45,13 @@ namespace Characters.Enemies
 
         void Update()
         {
+            if (timer < 20)
+            {
+                timer++;
+                return;
+            }
+
+            timer = 0;
             if (!playerSpotted) CheckForPlayer();
             CheckBehaviour();
         }
@@ -53,7 +61,7 @@ namespace Characters.Enemies
             var pos = transform.position;
             var playerPos = _player.transform.position;
             playerSpotted = Vector3.Distance(pos, playerPos) < 10;
-            Debug.Log("Player is spotted: "+ playerSpotted);
+            Debug.Log("Player is spotted: " + playerSpotted);
         }
 
         private void CheckBehaviour()
@@ -87,7 +95,6 @@ namespace Characters.Enemies
             sprite.flipX = hor < 0;
             var dir = new Vector3(1 * hor, 1 * ver, transform.position.z);
             transform.position += dir * (step * Time.deltaTime);
-            Thread.Sleep(2000);
         }
 
         private void DoMedium()
@@ -95,7 +102,7 @@ namespace Characters.Enemies
             if (!playerSpotted) return;
 
             transform.position += Vector3.Lerp(transform.position, _player.transform.position, 4) * Time.deltaTime;
-                //_player.transform.position * (step * Time.deltaTime);
+            //_player.transform.position * (step * Time.deltaTime);
             Attack();
         }
 
